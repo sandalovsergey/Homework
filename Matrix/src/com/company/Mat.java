@@ -46,6 +46,10 @@ import static java.lang.Double.parseDouble;
 
     }
 
+    public String toString() {
+        return "matrix";
+    }
+
     public void Matout() {
         for (int i = 0; i < Matrix.length; i++) {
             for (int j = 0; j < Matrix[0].length; j++) {
@@ -61,7 +65,7 @@ import static java.lang.Double.parseDouble;
     }
 
 
-    public void mulMatMat(Mat other) {
+    public Mat mulMatMat(Mat other) {
         try {
             File f = new File("outmult.txt");
             if (!f.exists()) {
@@ -90,17 +94,19 @@ import static java.lang.Double.parseDouble;
 
                // System.out.println("Result of multiplication");
                 res.Matout();
+                bw.close();
+                return res;
             }
             else{
                 bw.write("This matrix cant be multiplied");
                 System.out.println("This matrix cant be multiplied");
-                }
-            bw.close();
+                throw new IllegalArgumentException("Wrong sizes");
+
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
+        return null;
     }
 
     public void addMat(Mat other){
@@ -141,7 +147,11 @@ import static java.lang.Double.parseDouble;
 
     }
 
-    public boolean isEqual(Mat other) {
+    public boolean equals (Object o) {
+        if (!(o instanceof Mat)) {
+            return false;
+        }
+        Mat other = (Mat)o;
         boolean flag=true;
         if (Matrix.length == other.Matrix.length && Matrix[0].length== other.Matrix[0].length) {
             for(int i=0;i<Matrix.length;i++)

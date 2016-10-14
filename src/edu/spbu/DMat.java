@@ -2,11 +2,13 @@ package edu.spbu;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 import static java.lang.Double.parseDouble;
 
 public class DMat implements Matrix{
     double[][] MatrixD;
+    int SizeM,SizeN;
 
     public DMat(int x, int y) {
         MatrixD = new double[x][y];
@@ -34,6 +36,8 @@ public class DMat implements Matrix{
 
         N = matrix.get(0).split(" ").length;
 
+        SizeM=M;
+        SizeN=N;
 
         MatrixD = new double[M][N];
         for (int i = 0; i < M; i++) {
@@ -51,7 +55,7 @@ public class DMat implements Matrix{
         return "Dense Matrix";
     }
 
-    public void Matout() {
+    public void Denseout() {
         for (int i = 0; i < MatrixD.length; i++) {
             for (int j = 0; j < MatrixD[0].length; j++) {
                 System.out.print(MatrixD[i][j] + " ");
@@ -63,6 +67,9 @@ public class DMat implements Matrix{
     public Matrix mul(Matrix other){
         if (other instanceof DMat)
             return this.mulDD( (DMat) other);
+
+        else if(other instanceof SMat)
+            return this.mulDS((SMat) other);
 
         else return null;
     }
@@ -81,7 +88,7 @@ public class DMat implements Matrix{
 
             }
 
-           // res.Matout();
+            res.Denseout();
             return res;
         }
 
@@ -91,8 +98,40 @@ public class DMat implements Matrix{
         }
     }
 
-    public SMat mulDS(SMat other){
-        return null;
+    public SMat mulDS(SMat other)  {
+        if(this.SizeN==other.SizeM){
+            SMat res = new SMat(this.SizeM,other.SizeN);
+            //  double mult;
+            for(VectorCord keyOM: other.MatrixS.keySet()){
+                for(int j=0;j<this.SizeM;j++){
+                    VectorCord v = new VectorCord(j,keyOM.y);
+                    if(res.MatrixS.get(v)==null){
+                        //    mult=(double)this.MatrixS.get(keyTM)*other.MatrixD[keyTM.y][j];
+
+                        // if(mult != 0.0) {
+                        res.MatrixS.put(v, other.MatrixS.get(keyOM) * this.MatrixD[j][keyOM.x]);
+                        //  }
+                    }
+
+                    else{
+                        res.MatrixS.put(v,res.MatrixS.get(v) + other.MatrixS.get(keyOM)*this.MatrixD[j][keyOM.x]);
+                    }
+                }
+            }
+            Iterator<VectorCord> it = res.MatrixS.keySet().iterator();
+            while (it.hasNext()){
+                if(res.MatrixS.get(it.next()).equals(0.0))
+                    it.remove();
+            }
+              res.SparseOut();
+            return res;
+        }
+
+        else{
+            System.out.println("This matrix cant be multiplied");
+            return null;
+        }
+
     }
 
     public boolean equals (Object o) {
@@ -116,4 +155,22 @@ public class DMat implements Matrix{
         }
         return  flag;
     }
+
+  /*  public DMat transpD(){
+        if(SizeM>0 && SizeN>0){
+            DMat res = new DMat(SizeN,SizeM);
+
+            for(int i=0;i<SizeM;i++)
+                for(int j=0;j<SizeN;j++)
+                    res.MatrixD[j][i]=MatrixD[i][j];
+
+            return res;
+        }
+
+        else {
+            System.out.println("Wrong parameters");
+            return null;
+        }
+
+    }*/
 }

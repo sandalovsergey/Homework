@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
 import static java.lang.Double.parseDouble;
+import java.util.*;
 
 public class DenseMatrix implements Matrix{
     double[][] MatrixD;
@@ -140,25 +141,49 @@ public class DenseMatrix implements Matrix{
     }
 
     public boolean equals (Object o) {
-        if (!(o instanceof DenseMatrix)) {
-            return false;
-        }
-        DenseMatrix other = (DenseMatrix)o;
-        boolean flag=true;
-        if (MatrixD.length == other.MatrixD.length && MatrixD[0].length== other.MatrixD[0].length) {
-            for(int i = 0; i< MatrixD.length; i++)
-                for(int j = 0; j< MatrixD[0].length; j++) {
+        // if (!(o instanceof DenseMatrix)) {
+        //      return false;
+        //  }
+        if (o instanceof DenseMatrix){
+            DenseMatrix other = (DenseMatrix) o;
+        boolean flag = true;
+        if (MatrixD.length == other.MatrixD.length && MatrixD[0].length == other.MatrixD[0].length) {
+            for (int i = 0; i < MatrixD.length; i++)
+                for (int j = 0; j < MatrixD[0].length; j++) {
                     if (MatrixD[i][j] != other.MatrixD[i][j])
                         flag = false;
                 }
+        } else {
+            System.out.println("This matrix cant be equal");
+            flag = false;
+        }
+        return flag;
+
         }
 
-        else
-        {
-            System.out.println("This matrix cant be equal");
-            flag=false;
-        }
-        return  flag;
+        else {
+                if(o instanceof SparseMatrix)
+                {
+                    SparseMatrix other = (SparseMatrix) o;
+                    if(this.SizeN!=other.SizeM)
+                        return false;
+
+                    else{
+                        VectorCord keyOM;
+                        for (Map.Entry entryOM: other.MatrixS.entrySet()) {
+                            keyOM = (VectorCord) entryOM.getKey();
+                            if (!(other.MatrixS.get(keyOM).equals(this.MatrixD[keyOM.x][keyOM.y])))
+                                return false;
+                        }
+                        return true;
+                    }
+                }
+
+                else
+                    return false;
+
+            }
+
     }
 
     public DenseMatrix transpD(DenseMatrix other){

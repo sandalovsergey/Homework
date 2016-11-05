@@ -112,32 +112,56 @@ public class SparseMatrix implements Matrix {
 
     }
 
+    @Override
     public boolean equals(Object o) {
-        if (!(o instanceof SparseMatrix)) {
-            return false;
+      //  if (!(o instanceof SparseMatrix)) {
+      //      return false;
+      //  }
+
+        if(o instanceof SparseMatrix) {
+            SparseMatrix other = (SparseMatrix) o;
+            if (this.MatrixS.size() == other.MatrixS.size()) {
+                for (VectorCord keyM : this.MatrixS.keySet()) {
+
+                    if (other.MatrixS.get(keyM) == null) {
+                        // System.out.println("NULL");
+                        return false;
+                    } else if (!(this.MatrixS.get(keyM).equals(other.MatrixS.get(keyM))))  // ==???
+                    {
+                        // System.out.println("Не совпали");
+                        return false;
+                    }
+
+                }
+            } else
+                return false;
+
+
+            return true;
         }
-        SparseMatrix other = (SparseMatrix) o;
-        if (this.MatrixS.size() == other.MatrixS.size()) {
-            for (VectorCord keyM : this.MatrixS.keySet()) {
 
-                if (other.MatrixS.get(keyM) == null) {
-                   // System.out.println("NULL");
+        else {
+            if(o instanceof DenseMatrix)
+            {
+                DenseMatrix other = (DenseMatrix) o;
+                if(this.SizeN!=other.SizeM)
                     return false;
-                }
 
-                else if(!(this.MatrixS.get(keyM).equals(other.MatrixS.get(keyM))))  // ==???
-                {
-                   // System.out.println("Не совпали");
-                    return false;
+                else{
+                    VectorCord keyTM;
+                    for (Map.Entry entryTM: this.MatrixS.entrySet()) {
+                        keyTM = (VectorCord) entryTM.getKey();
+                        if (!(this.MatrixS.get(keyTM).equals(other.MatrixD[keyTM.x][keyTM.y])))
+                            return false;
+                    }
+                    return true;
                 }
-
             }
+
+            else
+                return false;
+
         }
-        else
-            return false;
-
-
-        return true;
     }
 
     @Override
@@ -251,7 +275,37 @@ public class SparseMatrix implements Matrix {
 
 
 
- /*   public SparseMatrix mulSS(SparseMatrix other) {
+ /* {
+        if (!(o instanceof SparseMatrix)) {
+            return false;
+        }
+        SparseMatrix other = (SparseMatrix) o;
+        if (this.MatrixS.size() == other.MatrixS.size()) {
+            for (VectorCord keyM : this.MatrixS.keySet()) {
+
+                if (other.MatrixS.get(keyM) == null) {
+                   // System.out.println("NULL");
+                    return false;
+                }
+
+                else if(!(this.MatrixS.get(keyM).equals(other.MatrixS.get(keyM))))  // ==???
+                {
+                   // System.out.println("Не совпали");
+                    return false;
+                }
+
+            }
+        }
+        else
+            return false;
+
+
+        return true;
+    }
+
+
+
+   public SparseMatrix mulSS(SparseMatrix other) {
         if (SizeN == other.SizeM) {
             SparseMatrix res = new SparseMatrix(SizeM, other.SizeN);
 

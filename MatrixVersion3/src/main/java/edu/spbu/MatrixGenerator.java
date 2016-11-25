@@ -1,4 +1,4 @@
-package main.java.edu.spbu;
+package edu.spbu;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import main.java.edu.spbu.matrix.*;
+import edu.spbu.matrix.*;
 
 public class MatrixGenerator {
     public static final int SEED1 = 1;

@@ -1,6 +1,6 @@
-package main.java.edu.spbu;
+package edu.spbu;
 
-import main.java.edu.spbu.matrix.*;
+import edu.spbu.matrix.*;
 
 public class MatrixPerfTest
 {

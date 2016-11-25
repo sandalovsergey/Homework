@@ -1,4 +1,4 @@
-package main.java.edu.spbu.matrix;
+package edu.spbu.matrix;
 
 /**
  * Created by Sergey Sandalov on 05.10.2016.

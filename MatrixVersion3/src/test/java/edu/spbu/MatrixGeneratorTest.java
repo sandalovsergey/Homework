@@ -1,4 +1,4 @@
-package test.java.edu.spbu;
+package edu.spbu;
 
 import org.junit.After;
 import org.junit.Test;

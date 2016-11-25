@@ -1,4 +1,4 @@
-package test.java.edu.spbu.matrix;
+package edu.spbu.matrix;
 
 import main.java.edu.spbu.matrix.*;
 import org.junit.Test;

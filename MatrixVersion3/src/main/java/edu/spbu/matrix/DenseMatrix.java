@@ -1,4 +1,4 @@
-package main.java.edu.spbu.matrix;
+package edu.spbu.matrix;
 
 import java.io.File;
 import java.io.IOException;
